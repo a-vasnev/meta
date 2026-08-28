@@ -1,6 +1,55 @@
-# Meta-analysis in Finance
-This is code to accompany Magnus and Vasnev (2025) "More information, less precision: meta-analysis through random eﬀects"
+# Meta-analysis through random effects
 
-Simple_figure.m produces Figure 2;
+MATLAB reproduction code for Jan R. Magnus and Andrey L. Vasnev, *More information, less precision: Meta-analysis through random effects*.
 
-Meta_analysis_v6_github.m produces Figure 4 (when my_case = 2) and Figure 5 (when my_case = 12)
+## Repository contents
+
+- `Simple_figure_v3_github.m` produces manuscript Figures 1 and 2.
+- `Meta_analysis_v9_github.m` produces manuscript Figures 3–6 and prints manuscript Table 1. Unrounded table values remain available as `table1_results`.
+- `Menkveld_table2_github.m` reproduces all 24 rows of manuscript Table 2. Unrounded values remain available as `table2_results`.
+- `RT_research_results.csv` contains the Menkveld et al. (2024) data used by the case-12 figure and Table 2.
+
+## Requirements
+
+- MATLAB with the Statistics and Machine Learning Toolbox
+- MATLAB Optimization Toolbox
+
+The current programs were checked and run successfully in MATLAB R2025b.
+
+## Data location
+
+The two programs that use the Menkveld data currently expect this relative path:
+
+```text
+Nonstandard errors/AV analysis/RT_research_results.csv
+```
+
+After cloning the repository, create the folders `Nonstandard errors/AV analysis` under the repository root and copy `RT_research_results.csv` into that location.
+
+## Running the programs
+
+Set the MATLAB Current Folder to the repository root, then run:
+
+```matlab
+Simple_figure_v3_github
+Meta_analysis_v9_github
+Menkveld_table2_github
+```
+
+By default, the figure programs create figures without writing files. To export vector PDFs:
+
+- Set `export_figures = true` in `Simple_figure_v3_github.m`.
+- Select the desired entries in `print_figures` in `Meta_analysis_v9_github.m`.
+
+Exported files are written to `output/pdf`.
+
+Both table programs perform numerical checks before printing their results in the MATLAB Command Window.
+
+## Table 2 reproduction notes
+
+- Quantiles use the Excel `PERCENTILE.INC` definition used for the submitted table.
+- Quantiles and IQRs use all 164 observations for each hypothesis and stage.
+- The meta-analysis removes the highest and lowest 5% of estimates and reported standard errors.
+- The submitted Stage-1 results also remove the lowest 5% of peer ratings.
+- The archived H6 Stage-1 result is preserved at the original optimizer's four-iteration stopping point so that it remains stable across MATLAB releases.
+- The calculated H6 Stage-1 total standard deviation is `76.4249418`, which rounds to `76.42`; the submitted manuscript table displays `76.43`.
