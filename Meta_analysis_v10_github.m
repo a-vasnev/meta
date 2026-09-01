@@ -341,14 +341,33 @@ function [result, figure_handle] = run_meta_analysis_case( ...
     end
 
     % Case-specific vertical limits reproduce the submitted layouts.
-    if is_conflicting_case
+    if my_case == 8
+        % Leave clear space above observation 1 for the northeast legend.
+        ylim([-3.5 k+2.5]);
+    elseif my_case == 8.1
         ylim([-3.5 k+0.5]);
     elseif my_case == 2
-        ylim([-4 k+0.5]);
+        % Leave clear space above observation 1 for the northeast legend.
+        ylim([-4 k+2.5]);
     else
         ylim([-10 data.metadata.k_case2+2]);
     end
     yticklabels({});
+
+    % Figures 3, 5, and 6 use the same key in the northeast corner, with the
+    % two entries stacked vertically.
+    if ismember(my_case, [2, 8, 12])
+        observation_legend_handle = plot(nan, nan, 'bs-');
+        combined_legend_handle = plot(nan, nan, 'rd-');
+        summary_legend = legend( ...
+            [observation_legend_handle, combined_legend_handle], ...
+            {'Observation and 95% CI', ...
+             'Combined estimate and 95% interval'}, ...
+            'Location', 'northeast', ...
+            'Orientation', 'vertical', ...
+            'NumColumns', 1, ...
+            'AutoUpdate', 'off');
+    end
 
     %% Relative-precision model for cases 2 and 12
     if ~is_conflicting_case
@@ -698,8 +717,8 @@ function data = load_case_data(my_case, my_q)
     elseif my_case == 12
         % Menkveld et al. (2024), Hypothesis H1, Stage 3.
         script_directory = fileparts(mfilename('fullpath'));
-        input_file = fullfile(script_directory, 'Nonstandard errors', ...
-            'AV analysis', 'RT_research_results.csv');
+        input_file = fullfile(script_directory, 'RT_research_results.csv');
+        assert(isfile(input_file), 'Input data file not found: %s', input_file);
         data_table = readtable(input_file);
 
         % Retain cross-hypothesis/stage quantiles for inspection.

@@ -15,15 +15,12 @@
 %      The archived H6 Stage-1 row is the original matrix optimizer's
 %      four-iteration result; that stopping point is fixed explicitly below
 %      so the submitted value is stable across MATLAB releases.
-%   5. The resulting H6 Stage-1 total standard deviation is 76.4249418,
-%      which rounds to 76.42. The submitted table displays 76.43.
 
 clearvars;
 
 %% Load the public Menkveld et al. data
 script_directory = fileparts(mfilename('fullpath'));
-input_file = fullfile(script_directory, 'Nonstandard errors', ...
-    'AV analysis', 'RT_research_results.csv');
+input_file = fullfile(script_directory, 'RT_research_results.csv');
 assert(isfile(input_file), 'Input data file not found: %s', input_file);
 
 data_table = readtable(input_file);
@@ -93,8 +90,6 @@ table2_results = table(hypothesis, stage, quantile25, quantile50, ...
 %% Check and print the submitted table
 verify_table2_results(table2_results);
 fprintf('All Table 2 numerical verification checks passed.\n');
-fprintf(['Note: calculated H6 Stage-1 sigma is %.8f (76.42 when rounded); ' ...
-         'the manuscript displays 76.43.\n'], table2_results.sigma_hat(21));
 print_table2_results(table2_results);
 
 %% Excel-compatible inclusive percentile

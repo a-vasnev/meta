@@ -3,12 +3,13 @@ close all;
 clearvars;
 
 %% Configuration
-% Set this to true to export both manuscript figures as vector PDFs.
-export_figures = false;
+% Set each element to true to export the corresponding manuscript figure
+% as a vector PDF: [Figure 1, Figure 2].
+export_figures = [false, false];
 
 script_directory = fileparts(mfilename('fullpath'));
 output_directory = fullfile(script_directory, 'output', 'pdf');
-if export_figures && ~isfolder(output_directory)
+if any(export_figures) && ~isfolder(output_directory)
     mkdir(output_directory);
 end
 
@@ -68,11 +69,13 @@ hold on;
 xlim([x1-4, x1+4]);
 ylim([0, 2.5]);
 draw_reference_lines(x1, sigma1, minimum_variance);
-plot(x_values, variance_common_sense, 'g');
+common_sense_curve = plot(x_values, variance_common_sense, 'g', ...
+                          'LineWidth', 1.5);
 plot(x1, minimum_variance, 'or', 'HandleVisibility', 'off');
 
 xlabel('y_2');
 ylabel('variance of combination');
+legend(common_sense_curve, {'Common sense'}, 'Location', 'northeast');
 hold off;
 
 %% Figure 2: common-sense, MOM, and ML variances
@@ -102,13 +105,15 @@ legend([common_sense_curve, mom_curve, ml_curve], ...
 hold off;
 
 %% Optional PDF export
-if export_figures
+if export_figures(1)
     exportgraphics(common_sense_figure, ...
         fullfile(output_directory, ...
                  'Figure_meta_simple_figure_common_sense.pdf'), ...
         'BackgroundColor', 'none', ...
         'ContentType', 'vector');
+end
 
+if export_figures(2)
     exportgraphics(combined_figure, ...
         fullfile(output_directory, 'Figure_meta_simple_figure.pdf'), ...
         'BackgroundColor', 'none', ...
