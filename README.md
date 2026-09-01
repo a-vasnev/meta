@@ -50,4 +50,4 @@ Both table programs perform numerical checks before printing their results in th
 - Quantiles and IQRs use all 164 observations for each hypothesis and stage.
 - The meta-analysis removes the highest and lowest 5% of estimates and reported standard errors.
 - The submitted Stage-1 results also remove the lowest 5% of peer ratings.
-- The archived H6 Stage-1 result is preserved at the original optimizer's four-iteration stopping point so that it remains stable across MATLAB releases.
+- H6 Stage 1 retains the original matrix likelihood evaluation but uses MATLAB's standard optimizer stopping criteria without a four-iteration cap.

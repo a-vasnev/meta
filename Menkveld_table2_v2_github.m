@@ -12,9 +12,8 @@
 %      of peer ratings, matching the calculations behind the submitted
 %      Stage-1 results.
 %   4. The ML search retains the submitted grid and optimizer initialization.
-%      The archived H6 Stage-1 row is the original matrix optimizer's
-%      four-iteration result; that stopping point is fixed explicitly below
-%      so the submitted value is stable across MATLAB releases.
+%      H6 Stage 1 retains the original matrix likelihood evaluation but uses
+%      MATLAB's standard optimizer stopping criteria.
 
 clearvars;
 
@@ -164,14 +163,11 @@ function model = fit_base_ml(estimates, standard_errors, hypothesis, stage)
     starting_tau2 = tau2_grid(starting_index);
 
     if hypothesis == 6 && stage == 1
-        % The submitted H6 Stage-1 entry was captured after iteration four
-        % of the original matrix calculation. Later iterations move to a
-        % different solution. Preserve the archived stopping point explicitly
-        % because fminunc's evaluation-limit behavior varies by release.
+        % Retain the original matrix likelihood evaluation for H6 Stage 1,
+        % but allow fminunc to use its standard stopping criteria.
         objective = @(tau2)-submitted_profile_likelihood( ...
             estimates, reported_variances, tau2);
-        unconstrained_options = optimoptions('fminunc', 'Display', 'off', ...
-            'MaxIterations', 4, 'MaxFunctionEvaluations', 1000);
+        unconstrained_options = optimoptions('fminunc', 'Display', 'off');
     else
         objective = @(tau2)-profile_likelihood( ...
             estimates, reported_variances, tau2);
@@ -266,7 +262,7 @@ function verify_table2_results(table2_results)
         -0.05, 0.59,  1.30,  1.43, 0.83; ...
         -0.14, 0.59,  0.75,  0.96, 0.62; ...
         -0.08, 0.50,  0.59,  0.78, 0.58; ...
-        -3.89, 3.06, 76.36, 76.42, 1.00; ...
+        -3.90, 3.08, 76.36, 76.43, 1.00; ...
         -0.02, 0.22, 50.18, 50.18, 1.00; ...
          0.00, 0.11, 20.33, 20.33, 1.00; ...
          0.00, 0.04, 13.47, 13.47, 1.00];
