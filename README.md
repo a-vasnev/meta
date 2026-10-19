@@ -1,6 +1,6 @@
 # Meta-analysis through random effects
 
-MATLAB reproduction code for Jan R. Magnus and Andrey L. Vasnev, *More information, less precision: Meta-analysis through random effects*.
+MATLAB reproduction code for Jan R. Magnus and Andrey L. Vasnev (2026), *More information, less precision: Meta-analysis through random effects*, forthcoming in Statistica Neerlandica.
 
 ## Repository contents
 
